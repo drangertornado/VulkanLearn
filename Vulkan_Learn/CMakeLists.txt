@@ -6,14 +6,14 @@ project(VulkanLearn VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Vulkan Setup
+# Vulkan setup
 find_package(Vulkan REQUIRED)
 
 if (NOT Vulkan_FOUND)
     message(FATAL_ERROR "Vulkan SDK not found! Please set VULKAN_SDK environment variable.")
 endif()
 
-# Shader Compilation
+# Shader compilation
 set(SHADER_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/shaders")
 set(SHADER_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/shaders")
 file(MAKE_DIRECTORY ${SHADER_OUTPUT_DIR})
@@ -50,13 +50,18 @@ endforeach()
 
 add_custom_target(compile_shaders ALL DEPENDS ${GENERATED_SPV_FILES})
 
-# Executable and Source Files
+# Executable and Source files
 add_executable(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME} PRIVATE
     main.cpp
-    VulkanInstance.h
-    VulkanInstance.cpp
+    Settings.hpp
+    Application.hpp
+    Application.cpp
+    Window.hpp
+    Window.cpp
+    Vulkan.hpp
+    Vulkan.cpp
 )
 
 add_dependencies(${PROJECT_NAME} compile_shaders)
@@ -69,17 +74,19 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMENT "Copying compiled shaders to executable 'shaders/' directory"
 )
 
-# Include Directories
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${Vulkan_INCLUDE_DIRS}
-)
+# Include directories
+target_include_directories(${PROJECT_NAME} PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
 
-# Vulkan Libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    Vulkan::Vulkan
-)
+# GLFW
+add_subdirectory(${PROJECT_SOURCE_DIR}/external/glfw EXCLUDE_FROM_ALL)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${PROJECT_SOURCE_DIR}/external/glfw/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 
-# Compiler Optimization Flags
+# GLM
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${PROJECT_SOURCE_DIR}/external/glm)
+
+# Compiler optimization flags
 if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE
         "$<$<CONFIG:Release>:/O2>"
@@ -91,16 +98,6 @@ else()
         "$<$<CONFIG:Debug>:-Og -g>"
     )
 endif()
-
-# GLFW
-add_subdirectory(${PROJECT_SOURCE_DIR}/external/glfw EXCLUDE_FROM_ALL)
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${PROJECT_SOURCE_DIR}/external/glfw/include)
-
-# GLM
-add_subdirectory(${PROJECT_SOURCE_DIR}/external/glm EXCLUDE_FROM_ALL)
-target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${PROJECT_SOURCE_DIR}/external/glm)
 
 # Optional install targets (commented out, for later use)
 # install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
