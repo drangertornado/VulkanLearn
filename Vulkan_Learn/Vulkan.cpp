@@ -14,9 +14,9 @@ namespace vl
     {
         settings = GlobalSettings::get();
 
-        if (!window)
+        if (window == nullptr)
         {
-            throw std::runtime_error("Vulkan: window is not initialized!");
+            throw std::runtime_error("Vulkan: Window is not initialized!");
         }
 
         initVulkan(window);
@@ -49,7 +49,7 @@ namespace vl
     {
         if (enableValidationLayers && !checkValidationLayerSupport())
         {
-            throw std::runtime_error("validation layers requested, but not available!");
+            throw std::runtime_error("Vulkan: validation layers requested, but not available!");
         }
 
         VkApplicationInfo appInfo{};
@@ -83,10 +83,10 @@ namespace vl
 
         if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
         {
-            throw std::runtime_error("failed to create instance!");
+            throw std::runtime_error("Vulkan: failed to create instance!");
         }
 
-        std::cout << "Vulkan: Instance successfully created!" << std::endl;
+        std::cout << "Vulkan: instance successfully created!" << std::endl;
     }
 
     void Vulkan::setupDebugMessenger()
@@ -99,20 +99,20 @@ namespace vl
 
         if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS)
         {
-            throw std::runtime_error("failed to set up debug messenger!");
+            throw std::runtime_error("Vulkan: failed to set up debug messenger!");
         }
 
-        std::cout << "Vulkan: Debug Messenger successfully created!" << std::endl;
+        std::cout << "Vulkan: debug Messenger successfully created!" << std::endl;
     }
 
     void Vulkan::createSurface(Window *window)
     {
         if (glfwCreateWindowSurface(instance, window->getGLFWwindow(), nullptr, &surface) != VK_SUCCESS)
         {
-            throw std::runtime_error("failed to create window surface!");
+            throw std::runtime_error("Vulkan: failed to create window surface!");
         }
 
-        std::cout << "Vulkan: Surface successfully created!" << std::endl;
+        std::cout << "Vulkan: window surface successfully created!" << std::endl;
     }
 
     void Vulkan::pickPhysicalDevice()
@@ -122,7 +122,7 @@ namespace vl
 
         if (deviceCount == 0)
         {
-            throw std::runtime_error("failed to find GPUs with Vulkan support!");
+            throw std::runtime_error("Vulkan: failed to find GPUs with Vulkan support!");
         }
 
         std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -139,10 +139,10 @@ namespace vl
 
         if (physicalDevice == VK_NULL_HANDLE)
         {
-            throw std::runtime_error("failed to find a suitable GPU!");
+            throw std::runtime_error("Vulkan: failed to find a suitable GPU!");
         }
 
-        std::cout << "Vulkan: Physical device successfully selected!" << std::endl;
+        std::cout << "Vulkan: GPU successfully selected!" << std::endl;
     }
 
     void Vulkan::createLogicalDevice()
@@ -182,13 +182,13 @@ namespace vl
 
         if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS)
         {
-            throw std::runtime_error("failed to create logical device!");
+            throw std::runtime_error("Vulkan: failed to create logical device!");
         }
 
         vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
         vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
 
-        std::cout << "Vulkan: Logical device successfully created!" << std::endl;
+        std::cout << "Vulkan: logical device successfully created!" << std::endl;
     }
 
     std::vector<const char *> Vulkan::getRequiredExtensions()
@@ -248,7 +248,7 @@ namespace vl
 
     VKAPI_ATTR VkBool32 VKAPI_CALL Vulkan::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)
     {
-        std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+        std::cerr << "Validation layer: " << pCallbackData->pMessage << std::endl;
         return VK_FALSE;
     }
 

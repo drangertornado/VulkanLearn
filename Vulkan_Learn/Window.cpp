@@ -26,7 +26,7 @@ namespace vl
     {
         if (!glfwInit())
         {
-            throw std::runtime_error("failed to initialize GLFW!");
+            throw std::runtime_error("Window: failed to initialize GLFW!");
         }
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -35,13 +35,13 @@ namespace vl
         if (!window)
         {
             glfwTerminate();
-            throw std::runtime_error("failed to create GLFW window!");
+            throw std::runtime_error("Window: failed to create GLFW window!");
         }
 
         glfwSetWindowUserPointer(window, this);
         glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 
-        std::cout << "Window: successfully created!" << std::endl;
+        std::cout << "Window: GLFW successfully initialized!" << std::endl;
     }
 
     void Window::render()
