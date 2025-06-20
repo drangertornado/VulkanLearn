@@ -10,16 +10,13 @@ namespace vl
     const std::vector<const char *> deviceExtensions = {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
-    Vulkan::Vulkan()
-    {
-        settings = GlobalSettings::get();
-    }
-
     Vulkan::Vulkan(Window *window)
     {
-        if (window == nullptr)
+        settings = GlobalSettings::get();
+
+        if (!window)
         {
-            throw std::runtime_error("Window is not initialized!");
+            throw std::runtime_error("Vulkan: window is not initialized!");
         }
 
         initVulkan(window);
@@ -42,15 +39,10 @@ namespace vl
     void Vulkan::initVulkan(Window *window)
     {
         createInstance();
-        std::cout << "\nVulkan instance created!" << std::endl;
         setupDebugMessenger();
-        std::cout << "\nVulkan debug messenger created!" << std::endl;
         createSurface(window);
-        std::cout << "\nVulkan surface created!" << std::endl;
         pickPhysicalDevice();
-        std::cout << "\nVulkan physical device selected!" << std::endl;
         createLogicalDevice();
-        std::cout << "\nVulkan logical device created!" << std::endl;
     }
 
     void Vulkan::createInstance()
@@ -93,6 +85,8 @@ namespace vl
         {
             throw std::runtime_error("failed to create instance!");
         }
+
+        std::cout << "Vulkan: Instance successfully created!" << std::endl;
     }
 
     void Vulkan::setupDebugMessenger()
@@ -107,22 +101,18 @@ namespace vl
         {
             throw std::runtime_error("failed to set up debug messenger!");
         }
+
+        std::cout << "Vulkan: Debug Messenger successfully created!" << std::endl;
     }
 
     void Vulkan::createSurface(Window *window)
     {
-        GLFWwindow *glfwWindow = window->getGLFWwindow();
-        if (!glfwWindow)
-        {
-            throw std::runtime_error("GLFW window is null!");
-        }
-
-        std::cout << "\nCreating window surface!" << std::endl;
-
-        if (glfwCreateWindowSurface(instance, glfwWindow, nullptr, &surface) != VK_SUCCESS)
+        if (glfwCreateWindowSurface(instance, window->getGLFWwindow(), nullptr, &surface) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to create window surface!");
         }
+
+        std::cout << "Vulkan: Surface successfully created!" << std::endl;
     }
 
     void Vulkan::pickPhysicalDevice()
@@ -151,6 +141,8 @@ namespace vl
         {
             throw std::runtime_error("failed to find a suitable GPU!");
         }
+
+        std::cout << "Vulkan: Physical device successfully selected!" << std::endl;
     }
 
     void Vulkan::createLogicalDevice()
@@ -195,6 +187,8 @@ namespace vl
 
         vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
         vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
+
+        std::cout << "Vulkan: Logical device successfully created!" << std::endl;
     }
 
     std::vector<const char *> Vulkan::getRequiredExtensions()

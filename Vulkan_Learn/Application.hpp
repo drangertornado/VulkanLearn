@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Settings.hpp"
 #include "Window.hpp"
 #include "Vulkan.hpp"
 
@@ -15,8 +14,6 @@ namespace vl
         void run();
 
     private:
-        Settings settings;
-
         Window window;
         Vulkan vulkan;
     };

@@ -1,5 +1,5 @@
 #include "Window.hpp"
-#include "Application.hpp"
+#include <iostream>
 
 namespace vl
 {
@@ -22,23 +22,34 @@ namespace vl
         return window;
     }
 
+    void Window::initWindow()
+    {
+        if (!glfwInit())
+        {
+            throw std::runtime_error("failed to initialize GLFW!");
+        }
+
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+        window = glfwCreateWindow(settings.width, settings.height, settings.applicationName.c_str(), nullptr, nullptr);
+        if (!window)
+        {
+            glfwTerminate();
+            throw std::runtime_error("failed to create GLFW window!");
+        }
+
+        glfwSetWindowUserPointer(window, this);
+        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+
+        std::cout << "Window: successfully created!" << std::endl;
+    }
+
     void Window::render()
     {
         while (!glfwWindowShouldClose(window))
         {
             glfwPollEvents();
         }
-    }
-
-    void Window::initWindow()
-    {
-        glfwInit();
-
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-        window = glfwCreateWindow(settings.width, settings.height, settings.applicationName.c_str(), nullptr, nullptr);
-        glfwSetWindowUserPointer(window, this);
-        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
     }
 
     void Window::framebufferResizeCallback(GLFWwindow *window, int width, int height)

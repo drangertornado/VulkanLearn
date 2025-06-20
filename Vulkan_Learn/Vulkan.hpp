@@ -2,8 +2,8 @@
 
 #include "Window.hpp"
 #include "Settings.hpp"
-#include <vector>
 #include <optional>
+#include <vector>
 
 namespace vl
 {
@@ -27,9 +27,10 @@ namespace vl
     class Vulkan
     {
     public:
-        Vulkan();
         Vulkan(Window *window);
         ~Vulkan();
+        Vulkan(const Vulkan &) = delete;
+        Vulkan &operator=(const Vulkan &) = delete;
 
     private:
         Settings settings;

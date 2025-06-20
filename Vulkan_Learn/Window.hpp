@@ -13,13 +13,16 @@ namespace vl
 
         Window();
         ~Window();
+        Window(const Window &) = delete;
+        Window &operator=(const Window &) = delete;
 
         GLFWwindow *getGLFWwindow();
+
         void render();
 
     private:
         Settings settings;
-
+        
         GLFWwindow *window;
 
         void initWindow();
