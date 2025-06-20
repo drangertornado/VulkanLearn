@@ -22,6 +22,14 @@ namespace vl
         return window;
     }
 
+    void Window::render()
+    {
+        while (!glfwWindowShouldClose(window))
+        {
+            glfwPollEvents();
+        }
+    }
+
     void Window::initWindow()
     {
         glfwInit();
@@ -35,7 +43,7 @@ namespace vl
 
     void Window::framebufferResizeCallback(GLFWwindow *window, int width, int height)
     {
-        auto app = reinterpret_cast<Application *>(glfwGetWindowUserPointer(window));
-        app->framebufferResized = true;
+        auto self = reinterpret_cast<Window *>(glfwGetWindowUserPointer(window));
+        self->framebufferResized = true;
     }
 }

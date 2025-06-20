@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Window.hpp"
 #include "Settings.hpp"
-#include <vulkan/vulkan.h>
 #include <vector>
+#include <optional>
 
 namespace vl
 {
@@ -12,10 +13,22 @@ namespace vl
     const bool enableValidationLayers = true;
 #endif
 
+    struct QueueFamilyIndices
+    {
+        std::optional<uint32_t> graphicsFamily;
+        std::optional<uint32_t> presentFamily;
+
+        bool isComplete()
+        {
+            return graphicsFamily.has_value() && presentFamily.has_value();
+        }
+    };
+
     class Vulkan
     {
     public:
         Vulkan();
+        Vulkan(Window *window);
         ~Vulkan();
 
     private:
@@ -23,12 +36,18 @@ namespace vl
 
         VkInstance instance;
         VkDebugUtilsMessengerEXT debugMessenger;
+        VkSurfaceKHR surface;
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+        VkDevice device;
+        VkQueue graphicsQueue;
+        VkQueue presentQueue;
 
-        void initVulkan();
+        void initVulkan(Window *window);
         void createInstance();
         void setupDebugMessenger();
+        void createSurface(Window *window);
         void pickPhysicalDevice();
+        void createLogicalDevice();
 
         // Create instance
         std::vector<const char *> getRequiredExtensions();
@@ -40,5 +59,8 @@ namespace vl
         static void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks *pAllocator);
         // Pick physical device
         bool isDeviceSuitable(VkPhysicalDevice device);
+        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+        // Swap chain
+        bool checkDeviceExtensionSupport(VkPhysicalDevice device);
     };
-};
+}

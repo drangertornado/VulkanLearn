@@ -9,9 +9,10 @@ namespace vl
     class Application
     {
     public:
-        bool framebufferResized = false;
         Application();
         ~Application();
+
+        void run();
 
     private:
         Settings settings;
@@ -19,4 +20,4 @@ namespace vl
         Window window;
         Vulkan vulkan;
     };
-};
+}

@@ -1,12 +1,23 @@
 #include "Application.hpp"
+#include <iostream>
 
-vl::Application::Application()
+namespace vl
 {
-    window = Window();
-    vulkan = Vulkan();
-}
+    Application::Application()
+    {
+        settings = GlobalSettings::get();
 
-vl::Application::~Application()
-{
-    
+        window = Window();
+        std::cout << "\nWindow initialized!" << std::endl;
+        vulkan = Vulkan(&window);
+        std::cout << "\nVulkan initialized!" << std::endl;
+    }
+
+    Application::~Application() {}
+
+    void Application::run()
+    {
+        window.render();
+        std::cout << "\nApp is running!" << std::endl;
+    }
 }
