@@ -41,6 +41,7 @@ namespace vl
 
     private:
         Settings settings;
+        Window *window;
 
         VkInstance instance;
         VkDebugUtilsMessengerEXT debugMessenger;
@@ -49,13 +50,21 @@ namespace vl
         VkDevice device;
         VkQueue graphicsQueue;
         VkQueue presentQueue;
+        VkSwapchainKHR swapChain;
+        std::vector<VkImage> swapChainImages;
+        VkFormat swapChainImageFormat;
+        VkExtent2D swapChainExtent;
+        std::vector<VkImageView> swapChainImageViews;
 
-        void initVulkan(Window *window);
+        void initVulkan();
         void createInstance();
         void setupDebugMessenger();
-        void createSurface(Window *window);
+        void createSurface();
         void pickPhysicalDevice();
         void createLogicalDevice();
+        void createSwapChain();
+        void createImageViews();
+        void createGraphicsPipeline();
 
         // Create instance
         std::vector<const char *> getRequiredExtensions();
@@ -71,5 +80,8 @@ namespace vl
         bool checkDeviceExtensionSupport(VkPhysicalDevice device);
         // Setup swap chain
         SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+        VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
+        VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
+        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities);
     };
 }
