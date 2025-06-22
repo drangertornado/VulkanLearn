@@ -46,15 +46,24 @@ namespace vl
         VkInstance instance;
         VkDebugUtilsMessengerEXT debugMessenger;
         VkSurfaceKHR surface;
+
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
         VkDevice device;
+
         VkQueue graphicsQueue;
         VkQueue presentQueue;
+
         VkSwapchainKHR swapChain;
         std::vector<VkImage> swapChainImages;
         VkFormat swapChainImageFormat;
         VkExtent2D swapChainExtent;
         std::vector<VkImageView> swapChainImageViews;
+
+        VkRenderPass renderPass;
+        VkPipelineLayout pipelineLayout;
+        VkPipeline graphicsPipeline;
+
+        std::vector<VkFramebuffer> swapChainFramebuffers;
 
         void initVulkan();
         void createInstance();
@@ -64,7 +73,9 @@ namespace vl
         void createLogicalDevice();
         void createSwapChain();
         void createImageViews();
+        void createRenderPass();
         void createGraphicsPipeline();
+        void createFramebuffers();
 
         // Create instance
         std::vector<const char *> getRequiredExtensions();
@@ -83,5 +94,8 @@ namespace vl
         VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
         VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
         VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+        // Setup pipeline
+        static std::vector<char> readFile(const std::string &filename);
+        VkShaderModule createShaderModule(const std::vector<char> &code);
     };
 }
