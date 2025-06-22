@@ -18,8 +18,6 @@ namespace vl
 
         GLFWwindow *getGLFWwindow();
 
-        void render();
-
     private:
         Settings settings;
         

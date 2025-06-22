@@ -39,6 +39,8 @@ namespace vl
         Vulkan(const Vulkan &) = delete;
         Vulkan &operator=(const Vulkan &) = delete;
 
+        void drawFrame();
+
     private:
         Settings settings;
         Window *window;
@@ -68,6 +70,10 @@ namespace vl
         VkCommandPool commandPool;
         VkCommandBuffer commandBuffer;
 
+        VkSemaphore imageAvailableSemaphore;
+        VkSemaphore renderFinishedSemaphore;
+        VkFence inFlightFence;
+
         void initVulkan();
         void createInstance();
         void setupDebugMessenger();
@@ -81,6 +87,8 @@ namespace vl
         void createFramebuffers();
         void createCommandPool();
         void createCommandBuffer();
+        void createSyncObjects();
+
         void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
         // Create instance

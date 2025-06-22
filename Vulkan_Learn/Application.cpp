@@ -8,6 +8,10 @@ namespace vl
 
     void Application::run()
     {
-        window.render();
+        while (!glfwWindowShouldClose(window.getGLFWwindow()))
+        {
+            glfwPollEvents();
+            vulkan.drawFrame();
+        }
     }
 }
