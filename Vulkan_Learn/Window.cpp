@@ -49,6 +49,8 @@ namespace vl
         while (!glfwWindowShouldClose(window))
         {
             glfwPollEvents();
+
+            
         }
     }
 

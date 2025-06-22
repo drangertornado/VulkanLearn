@@ -65,6 +65,9 @@ namespace vl
 
         std::vector<VkFramebuffer> swapChainFramebuffers;
 
+        VkCommandPool commandPool;
+        VkCommandBuffer commandBuffer;
+
         void initVulkan();
         void createInstance();
         void setupDebugMessenger();
@@ -76,6 +79,9 @@ namespace vl
         void createRenderPass();
         void createGraphicsPipeline();
         void createFramebuffers();
+        void createCommandPool();
+        void createCommandBuffer();
+        void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
         // Create instance
         std::vector<const char *> getRequiredExtensions();
