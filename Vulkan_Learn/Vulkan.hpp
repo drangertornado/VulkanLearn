@@ -68,11 +68,13 @@ namespace vl
         std::vector<VkFramebuffer> swapChainFramebuffers;
 
         VkCommandPool commandPool;
-        VkCommandBuffer commandBuffer;
+        std::vector<VkCommandBuffer> commandBuffers;
 
-        VkSemaphore imageAvailableSemaphore;
-        VkSemaphore renderFinishedSemaphore;
-        VkFence inFlightFence;
+        std::vector<VkSemaphore> imageAvailableSemaphores;
+        std::vector<VkSemaphore> renderFinishedSemaphores;
+        std::vector<VkFence> inFlightFences;
+
+        uint32_t currentFrame = 0;
 
         void initVulkan();
         void createInstance();
@@ -86,7 +88,7 @@ namespace vl
         void createGraphicsPipeline();
         void createFramebuffers();
         void createCommandPool();
-        void createCommandBuffer();
+        void createCommandBuffers();
         void createSyncObjects();
 
         void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
