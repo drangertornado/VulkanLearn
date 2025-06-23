@@ -22,6 +22,16 @@ namespace vl
         return window;
     }
 
+    bool Window::getFrameBufferResized()
+    {
+        return framebufferResized;
+    }
+
+    void Window::setFrameBufferResized(bool value)
+    {
+        framebufferResized = value;
+    }
+
     void Window::initWindow()
     {
         if (!glfwInit())

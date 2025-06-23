@@ -9,19 +9,21 @@ namespace vl
     class Window
     {
     public:
-        bool framebufferResized = false;
-
         Window();
         ~Window();
         Window(const Window &) = delete;
         Window &operator=(const Window &) = delete;
 
         GLFWwindow *getGLFWwindow();
+        bool getFrameBufferResized();
+        void setFrameBufferResized(bool value);
 
     private:
         Settings settings;
         
         GLFWwindow *window;
+
+        bool framebufferResized = false;
 
         void initWindow();
 

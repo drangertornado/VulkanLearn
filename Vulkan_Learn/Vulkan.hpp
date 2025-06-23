@@ -40,6 +40,7 @@ namespace vl
         Vulkan &operator=(const Vulkan &) = delete;
 
         void drawFrame();
+        void recreateSwapChain();
 
     private:
         Settings settings;
@@ -90,6 +91,8 @@ namespace vl
         void createCommandPool();
         void createCommandBuffers();
         void createSyncObjects();
+        
+        void cleanupSwapChain();
 
         void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
