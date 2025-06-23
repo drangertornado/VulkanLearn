@@ -57,6 +57,6 @@ namespace vl
     void Window::framebufferResizeCallback(GLFWwindow *window, int width, int height)
     {
         auto self = reinterpret_cast<Window *>(glfwGetWindowUserPointer(window));
-        self->framebufferResized = true;
+        self->setFrameBufferResized(true);
     }
 }
